@@ -1,17 +1,10 @@
 import HeaderBox from '@/components/HeaderBox';
 import RightSidebar from '@/components/RightSidebar';
 import TotalBalanceBox from '@/components/TotalBalanceBox';
-import Tabs from '@/components/Tabs'
+import { getLoggedInUser } from '@/lib/actions/user.actions'
 
-//tabData mock:
-const tabData = [
-    { id: 'tab1_unique_id', title: 'Tab 1', content: 'Content for Tab 1' },
-    { id: 'tab2_unique_id', title: 'Tab 2', content: 'Content for Tab 2' },
-    { id: 'tab3_unique_id', title: 'Tab 3', content: 'Content for Tab 3' },
-]
-
-const Home = () => {
-    const loggedIn = { firstName: 'Hyde', lastName: 'Song', email: 'hyde.song@icloud.com' }
+const Home = async () => {
+    const loggedIn = await getLoggedInUser();
 
     return (
         <section className='home'>
@@ -20,7 +13,7 @@ const Home = () => {
                     <HeaderBox
                         type="greeting"
                         title="Welcome"
-                        user={loggedIn?.firstName || "Guest"}
+                        user={loggedIn?.name || "Guest"}
                         subtext="Access and manage your account and transactions efficiently."
                     />
                     <TotalBalanceBox
@@ -69,17 +62,6 @@ const Home = () => {
                 </header>
 
                 recent transactions
-                {/* <div className="tabs-wrapper">
-                    <Tabs>
-                        <Tabs.Titles items={tabData.map(({ id, title }) => ({ id, title }))} />
-                        <Tabs.Contents
-                            items={tabData.map(({ id, content }) => ({
-                                id,
-                                content: <p>{content}</p>,
-                            }))}
-                        />
-                    </Tabs>
-                </div> */}
 
             </div>
 
