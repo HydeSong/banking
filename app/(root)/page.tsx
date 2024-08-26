@@ -4,74 +4,74 @@ import TotalBalanceBox from '@/components/TotalBalanceBox';
 import { getLoggedInUser } from '@/lib/actions/user.actions'
 
 const Home = async () => {
-    const loggedIn = await getLoggedInUser();
+  const loggedIn = await getLoggedInUser();
 
-    return (
-        <section className='home'>
-            <div className='home-content'>
-                <header className='home-header'>
-                    <HeaderBox
-                        type="greeting"
-                        title="Welcome"
-                        user={loggedIn?.name || "Guest"}
-                        subtext="Access and manage your account and transactions efficiently."
-                    />
-                    <TotalBalanceBox
-                        accounts={[{
-                            id: '1',
-                            availableBalance: 123124234,
-                            currentBalance: 435543,
-                            officialName: "dewqeq",
-                            mask: "rewewrq",
-                            institutionId: "43as",
-                            name: "erwer",
-                            type: "wrew",
-                            subtype: "fwee",
-                            appwriteItemId: "drwerw",
-                            sharableId: "string;"
-                        },
-                        {
-                            id: '2',
-                            availableBalance: 5436654,
-                            currentBalance: 45543,
-                            officialName: "dewqeq",
-                            mask: "rewewrq",
-                            institutionId: "43as",
-                            name: "345dfsfs",
-                            type: "wrew",
-                            subtype: "fwee",
-                            appwriteItemId: "drwerw",
-                            sharableId: "string;"
-                        },
-                        {
-                            id: '3',
-                            availableBalance: 5436654,
-                            currentBalance: 45543,
-                            officialName: "dewqeq",
-                            mask: "rewewrq",
-                            institutionId: "43as",
-                            name: "345dfsfs",
-                            type: "wrew",
-                            subtype: "fwee",
-                            appwriteItemId: "drwerw",
-                            sharableId: "string;"
-                        }]}
-                        totalBanks={1}
-                        totalCurrentBalance={123114.35}
-                    />
-                </header>
+  return (
+    <section className='home'>
+      <div className='home-content'>
+        <header className='home-header'>
+          <HeaderBox
+            type="greeting"
+            title="Welcome"
+            user={loggedIn?.name || "Guest"}
+            subtext="Access and manage your account and transactions efficiently."
+          />
+          <TotalBalanceBox
+            accounts={[{
+              id: '1',
+              availableBalance: 123124234,
+              currentBalance: 435543,
+              officialName: "dewqeq",
+              mask: "rewewrq",
+              institutionId: "43as",
+              name: "erwer",
+              type: "wrew",
+              subtype: "fwee",
+              appwriteItemId: "drwerw",
+              sharableId: "string;"
+            },
+            {
+              id: '2',
+              availableBalance: 5436654,
+              currentBalance: 45543,
+              officialName: "dewqeq",
+              mask: "rewewrq",
+              institutionId: "43as",
+              name: "345dfsfs",
+              type: "wrew",
+              subtype: "fwee",
+              appwriteItemId: "drwerw",
+              sharableId: "string;"
+            },
+            {
+              id: '3',
+              availableBalance: 5436654,
+              currentBalance: 45543,
+              officialName: "dewqeq",
+              mask: "rewewrq",
+              institutionId: "43as",
+              name: "345dfsfs",
+              type: "wrew",
+              subtype: "fwee",
+              appwriteItemId: "drwerw",
+              sharableId: "string;"
+            }]}
+            totalBanks={1}
+            totalCurrentBalance={123114.35}
+          />
+        </header>
 
-                recent transactions
+        recent transactions
 
-            </div>
+      </div>
 
-            <RightSidebar
-                user={loggedIn}
-                transactions={[]}
-                banks={[{ currentBalance: 12545.45 }, { currentBalance: 325345.45 }]}
-            />
-        </section>
-    )
+      <RightSidebar
+        user={loggedIn}
+        transactions={[]}
+        banks={[{ currentBalance: 12545.45 }, { currentBalance: 325345.45 }]}
+      />
+    </section>
+  )
 }
 
 export default Home
