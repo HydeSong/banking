@@ -40,7 +40,6 @@ export async function getLoggedInUser() {
     try {
         const { account } = await createSessionClient();
         const user = await account.get();
-        console.log("###################user", user)
         return parseStringify(user);
     } catch (error) {
         return null;
