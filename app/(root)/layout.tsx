@@ -9,28 +9,33 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const loggedIn = await getLoggedInUser();
-  console.log("###################loggedIn", loggedIn)
-  if (!loggedIn) redirect('/sign-in')
+  try {
+    const loggedIn = await getLoggedInUser();
+    if (!loggedIn) redirect('/sign-in');
 
-  return (
-    <main className="flex h-screen w-full font-inter">
-      <Sidebar user={loggedIn} />
+    return (
+      <main className="flex h-screen w-full font-inter">
+        <Sidebar user={loggedIn} />
 
-      <div className='flex size-full flex-col'>
-        <div className='root-layout'>
-          <Image
-            src="/icons/logo.svg"
-            width={30}
-            height={30}
-            alt='menu icon'
-          />
-          <div>
-            <MobileNav user={loggedIn} />
+        <div className='flex size-full flex-col'>
+          <div className='root-layout'>
+            <Image
+              src="/icons/logo.svg"
+              width={30}
+              height={30}
+              alt='logo'
+            />
+            <div>
+              <MobileNav user={loggedIn} />
+            </div>
           </div>
+          {children}
         </div>
-        {children}
-      </div>
-    </main>
-  );
+      </main>
+    );
+  } catch (error) {
+    console.error("Failed to get logged in user", error);
+    redirect('/sign-in');
+    return null;
+  }
 }
