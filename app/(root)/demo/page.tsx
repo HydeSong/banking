@@ -171,9 +171,9 @@ function TaskStatus({ status }: { status: 'idle' | 'processing' | 'done' }) {
     const { setFavicon } = useFavicon('/icons/favicon-idle.ico');
 
     useEffect(() => {
-        if (status === 'processing') setFavicon('/icons/favicon-loading.ico');
-        else if (status === 'done') setFavicon('/icons/favicon-success.ico');
-        else setFavicon('/favicon-idle.ico');
+        if (status === 'processing') setFavicon('/icons/processing.svg', 'image/svg+xml');
+        else if (status === 'done') setFavicon('/icons/favicon-success.ico', 'image/svg+xml');
+        else setFavicon('/favicon-idle.ico', 'image/svg+xml');
     }, [status]);
 
     return <p>Current status: {status}</p>;
@@ -455,7 +455,7 @@ function ResponsiveComponent() {
 
 function Demo() {
     return (
-        <>
+        <div>
             <BatteryIndicator />
             <Dropdown />
             <CopyInvite />
@@ -488,7 +488,7 @@ function Demo() {
             <Clock />
             <ProfilePage />
             <ResponsiveComponent />
-        </>
+        </div>
     )
 }
 
