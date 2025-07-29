@@ -174,7 +174,7 @@ function TaskStatus({ status }: { status: 'idle' | 'processing' | 'done' }) {
         if (status === 'processing') setFavicon('/icons/processing.svg', 'image/svg+xml');
         else if (status === 'done') setFavicon('/icons/favicon-success.ico', 'image/svg+xml');
         else setFavicon('/favicon-idle.ico', 'image/svg+xml');
-    }, [status]);
+    }, [status, setFavicon]);
 
     return <p>Current status: {status}</p>;
 }
@@ -186,7 +186,7 @@ function MyComponent({ value }) {
         if (isFirst) return;
 
         console.log('Value changed:', value);
-    }, [value]);
+    }, [value, isFirst]);
 
     return <p>Value: {value}</p>;
 }
@@ -380,7 +380,7 @@ function Modal({ isOpen, onClose }) {
 
     useEffect(() => {
         setIsScrollLocked(isOpen);
-    }, [isOpen]);
+    }, [isOpen, setIsScrollLocked]);
 
     return isOpen ? (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center">

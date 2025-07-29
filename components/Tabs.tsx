@@ -32,7 +32,8 @@ const Tabs: TabsWrapper & TabsComposition = ({ children }) => {
   return <TabsProvider>{children}</TabsProvider>
 }
 
-Tabs.Titles = ({ items }) => {
+// 定义Titles组件并添加displayName
+function Titles({ items }: TabTitlesProps) {
   const { currentIndex, setCurrentIndex } = useTabsContext()
   return (
     <div role="tablist">
@@ -53,8 +54,10 @@ Tabs.Titles = ({ items }) => {
     </div>
   )
 }
+Titles.displayName = 'Tabs.Titles';
 
-Tabs.Contents = ({ items }) => {
+// 定义Contents组件并添加displayName
+function Contents({ items }: TabContentProps) {
   const { currentIndex } = useTabsContext()
   const { id, content } = items[currentIndex]
   return (
@@ -68,5 +71,10 @@ Tabs.Contents = ({ items }) => {
     </div>
   )
 }
+Contents.displayName = 'Tabs.Contents';
+
+// 将组件分配给Tabs
+Tabs.Titles = Titles;
+Tabs.Contents = Contents;
 
 export default Tabs
