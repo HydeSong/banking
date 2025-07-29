@@ -33,10 +33,15 @@ type Permission =
 export type UsePermissionState = PermissionState | 'checking' | 'not-supported';
 
 /**
- * Check browser permissions for querying state for various browser APIs
- *
- * @param {Permission} permission The name of the permission to query.
- * @return {UsePermissionState} The state of a requested permission
+ * 检查浏览器API权限状态的Hook
+ * @param {Permission} permission - 要查询的权限名称（如'camera'、'microphone'等）
+ * @returns {UsePermissionState} 权限状态，可能的值：
+ *   - 'checking': 正在检查权限
+ *   - 'granted': 权限已授予
+ *   - 'denied': 权限已拒绝
+ *   - 'prompt': 需要用户确认
+ *   - 'not-supported': 权限检查不受支持或发生错误
+ * @note 依赖浏览器的Permissions API，部分浏览器可能不支持
  */
 export const usePermission = (permission: Permission): UsePermissionState => {
     const [state, setState] = useState<UsePermissionState>('checking');

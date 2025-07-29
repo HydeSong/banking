@@ -1,5 +1,67 @@
 import { useEffect, useState } from 'react';
 
+/**
+ * 管理浏览器标签页通知的React Hook，支持标题闪烁、favicon徽章和自定义通知内容
+ * 当用户离开当前标签页时显示视觉提示，提高用户对新消息的感知
+ * 
+ * @param {number} [flashDelayInSeconds=2] - 标题闪烁切换间隔时间(秒)
+ * @returns {{show: (options?: {title?: string, prefix?: string, flashMessage?: string}) => void, hide: () => void, updateFlashMessage: (message: string) => void, setShowFaviconDot: (show: boolean) => void, setFaviconDotColor: (color: string) => void}} 控制函数集合:
+ *   - show: 显示通知，可自定义标题、前缀和闪烁消息
+ *   - hide: 隐藏通知，恢复原始标题和favicon
+ *   - updateFlashMessage: 更新闪烁消息内容
+ *   - setShowFaviconDot: 控制是否在favicon上显示通知点
+ *   - setFaviconDotColor: 设置favicon通知点颜色
+ * 
+ * @example
+ * // 基础用法 - 新消息通知
+ * function ChatApp() {
+ *   const { show, hide } = useTabNotification();
+ *   
+ *   return (
+ *     <div>
+ *       <button onClick={() => show({ title: '新消息', flashMessage: '你有一条未读消息' })}>
+ *         发送通知
+ *       </button>
+ *       <button onClick={hide}>清除通知</button>
+ *     </div>
+ *   );
+ * }
+ * 
+ * @example
+ * // 自定义favicon通知点
+ * function NotificationSettings() {
+ *   const { setShowFaviconDot, setFaviconDotColor } = useTabNotification();
+ *   
+ *   return (
+ *     <div>
+ *       <label>
+ *         <input
+ *           type="checkbox"
+ *           onChange={(e) => setShowFaviconDot(e.target.checked)}
+ *           defaultChecked
+ *         />
+ *         显示通知点
+ *       </label>
+ *       <input
+ *         type="color"
+ *         onChange={(e) => setFaviconDotColor(e.target.value)}
+ *         defaultValue="#f00000"
+ *       />
+ *     </div>
+ *   );
+ * }
+ * 
+ * @note 实现细节:
+ *   - 使用canvas动态修改favicon，添加彩色通知点
+ *   - 标题闪烁通过定时切换document.title实现
+ *   - 自动保存原始标题和favicon，隐藏时恢复
+ *   - 支持部分更新：单独修改闪烁消息或favicon样式
+ * 
+ * @warning 浏览器兼容性:
+ *   - Favicon修改需要浏览器支持canvas和data URL
+ *   - 某些浏览器可能限制频繁的title修改
+ *   - 依赖页面中已存在的favicon元素(link[rel$=icon])
+ */
 export function useTabNotification(flashDelayInSeconds = 2) {
     const [originalTitle] = useState(document.title);
     let defaultFavicon = document

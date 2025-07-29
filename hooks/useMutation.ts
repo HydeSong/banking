@@ -1,5 +1,17 @@
 import { useState, useEffect } from 'react';
 
+/**
+ * 用于处理API请求的Hook，支持请求取消和超时处理
+ * @template T - 响应数据类型
+ * @template P - 请求体数据类型
+ * @param {string} apiUrl - 请求URL
+ * @param {P} payload - 请求体数据
+ * @param {Record<string, string>} headers - 请求头配置
+ * @param {{ method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'; timeout?: number }} options - 请求选项
+ * @param {(data: T) => void} [onSuccess] - 请求成功回调
+ * @param {(error: { message: string; status?: number }) => void} [onError] - 请求失败回调
+ * @returns {{ loading: boolean; response: T | null; error: { message: string; status?: number } | null }} 请求状态对象
+ */
 const useMutation = <T = any, P = any>(
     apiUrl: string,
     payload: P,
