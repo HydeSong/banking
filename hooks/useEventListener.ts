@@ -1,12 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect';
 
-export function useEventListener<K extends keyof WindowEventMap>(
-    eventName: K,
-    handler: (event: WindowEventMap[K]) => void,
-    element?: React.RefObject<any>,
+type ValidEventTarget = HTMLElement | Document | Window | EventTarget | null;
+
+export function useEventListener(
+    eventName: string,
+    handler: (event: Event) => void,
+    element?: React.RefObject<ValidEventTarget>,
 ) {
     const savedHandler = useRef(handler);
+    const eventListener = useCallback((event: Event) => savedHandler.current(event), [savedHandler]);
 
     useIsomorphicLayoutEffect(() => {
         savedHandler.current = handler;
@@ -19,11 +22,9 @@ export function useEventListener<K extends keyof WindowEventMap>(
             return;
         }
 
-        const eventListener = (event: Event) => savedHandler.current(event);
         targetElement.addEventListener(eventName, eventListener);
-
         return () => {
             targetElement.removeEventListener(eventName, eventListener);
         };
-    }, [eventName, element]);
+    }, [eventName, element, eventListener]);
 }

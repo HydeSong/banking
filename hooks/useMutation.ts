@@ -1,23 +1,26 @@
 import { useState, useEffect } from 'react';
 
-const useMutation = (
+const useMutation = <T = any, P = any>(
     apiUrl: string,
-    payload: any,
+    payload: P,
     headers: Record<string, string> = {},
-    options: { method?: string; timeout?: number } = {},
-    onSuccess?: (data: any) => void,
-    onError?: (error: string) => void
+    options: { method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'; timeout?: number } = {},
+    onSuccess?: (data: T) => void,
+    onError?: (error: { message: string; status?: number }) => void
 ) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [response, setResponse] = useState<any | null>(null);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<{ message: string; status?: number } | null>(null);
 
     useEffect(() => {
         let isMounted = true;
+        const controller = new AbortController();
+        const { signal } = controller;
         const timeoutId = options.timeout ? setTimeout(() => {
             if (isMounted) {
                 setLoading(false);
-                setError('Request timed out');
+                setError({ message: 'Request timed out' });
+                controller.abort();
             }
         }, options.timeout) : undefined;
 
@@ -31,14 +34,16 @@ const useMutation = (
                 ...headers,
             },
             body: JSON.stringify(payload),
-
+            signal,
         })
             .then((response) => {
                 clearTimeout(timeoutId);
                 if (!response.ok) {
-                    throw new Error('Request failed');
+                    const error = new Error(`Request failed with status ${response.status}`);
+                    (error as any).status = response.status;
+                    throw error;
                 }
-                return response.json();
+                return response.json() as Promise<T>;
             })
             .then((data) => {
                 if (isMounted) {

@@ -19,30 +19,26 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     }, [initialValue, key]);
 
     const [storedValue, setStoredValue] = useState(readValue);
-    const setValueRef = useRef<any>();
-
-    setValueRef.current = (value: T) => {
-        try {
-            const newValue = value instanceof Function ? value(storedValue) : value;
-            window.localStorage.setItem(key, JSON.stringify(newValue));
-
-            setStoredValue(newValue);
-            window.dispatchEvent(new Event('local-storage'));
-        } catch (error) {
-            console.warn(`Error adding "${key}" to storage:`, error);
-        }
-    };
-
-    const setValue = useCallback((value: T) => setValueRef.current?.(value), []);
+    const setValue = useCallback((value: T | ((val: T) => T), onError?: (error: Error) => void) => {
+    try {
+        const newValue = value instanceof Function ? value(storedValue) : value;
+        window.localStorage.setItem(key, JSON.stringify(newValue));
+        setStoredValue(newValue);
+        window.dispatchEvent(new Event('local-storage'));
+    } catch (error) {
+        if (onError && error instanceof Error) onError(error);
+        else console.warn(`Error setting localStorage key “${key}”:`, error);
+    }
+}, [key, storedValue]);
 
     useEffect(() => {
         setStoredValue(readValue());
     }, []);
 
     const handleStorageChange = useCallback(
-        () => setStoredValue(readValue()),
-        [readValue],
-    );
+    (_event: Event) => setStoredValue(readValue()),
+    [readValue],
+);
     useEventListener('storage', handleStorageChange);
     useEventListener('local-storage', handleStorageChange);
     return [storedValue, setValue];

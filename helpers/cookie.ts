@@ -4,6 +4,8 @@
  * @returns 解析后的类型值，若不存在则返回 undefined
  */
 export function getCookie<T>(key: string): T | undefined {
+    // 检查是否在浏览器环境中
+    if (typeof window === 'undefined') return undefined;
     // 构建完整的键名（包含等号）
     const name = `${key}=`;
     // 解码并分割所有 Cookie 键值对
@@ -40,6 +42,8 @@ export function setCookie<T>(
     value: T,
     expireDays: number = 365
 ): void {
+    // 检查是否在浏览器环境中
+    if (typeof window === 'undefined') return;
     // 构建过期时间字符串
     let expires = '';
     if (expireDays) {
@@ -59,6 +63,8 @@ export function setCookie<T>(
  * @param key Cookie 键名
  */
 export function deleteCookie(key: string): void {
+    // 检查是否在浏览器环境中
+    if (typeof window === 'undefined') return;
     // 通过设置过期时间为过去时间来删除 Cookie
     setCookie(key, '', -1); // 使用 setCookie 的过期逻辑
 }
@@ -96,6 +102,9 @@ export function parseToCookieType(value: any): CookieValueType {
  */
 export function getCookies(keys: string[]): Record<string, unknown> {
     const result: Record<string, unknown> = {};
+
+    // 检查是否在浏览器环境中
+    if (typeof window === 'undefined') return result;
 
     try {
         const cookies = document.cookie.split('; ');

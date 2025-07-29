@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { useEventListener } from "./useEventListener";
 
 export function useNetwork() {
-    const [isOnline, setIsOnline] = useState<boolean>(navigator?.onLine || true);
+    const [isOnline, setIsOnline] = useState<boolean>(() => typeof window !== 'undefined' ? navigator.onLine : true);
 
     const handleOnline = useCallback(() => {
         setIsOnline(true);
