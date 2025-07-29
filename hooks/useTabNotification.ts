@@ -79,7 +79,7 @@ export function useTabNotification(flashDelayInSeconds = 2) {
         setOriginalTitle(document.title);
         const defaultFavicon = document.querySelector('link[rel$=icon]')?.getAttribute('href');
         setFavicon(defaultFavicon ?? null);
-        setNotificationFavicon(defaultFavicon);
+        setNotificationFavicon(defaultFavicon ?? null);
     }, []);
 
     useEffect(() => {
