@@ -58,6 +58,11 @@ export const useIntersectionObserver = ({
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
+        // Check for window and IntersectionObserver availability
+        if (typeof window === 'undefined' || !window.IntersectionObserver) {
+            setIsVisible(true);
+            return;
+        }
         const currentRef = observeRef.current;
         if (!currentRef) return;
 
