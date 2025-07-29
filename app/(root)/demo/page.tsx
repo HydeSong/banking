@@ -75,7 +75,7 @@ function CopyInvite() {
             </button>
 
             {copied && <p className="text-green-500">✅ Copied!</p>}
-            {error && <p className="text-red-500">❌ {error.message}</p>}
+            {error && <p className="text-red-500">❌ {typeof error === 'string' ? error : error.message}</p>}
         </div>
     );
 }
@@ -157,8 +157,8 @@ function App() {
 }
 
 function EscapeListener() {
-    useEventListener('keydown', (e: KeyboardEvent) => {
-        if (e.key === 'Escape') {
+    useEventListener('keydown', (e: Event) => {
+        if ((e as KeyboardEvent).key === 'Escape') {
             console.log('Escape key pressed');
         }
     });
@@ -179,7 +179,7 @@ function TaskStatus({ status }: { status: 'idle' | 'processing' | 'done' }) {
     return <p>Current status: {status}</p>;
 }
 
-function MyComponent({ value }) {
+function MyComponent({ value }: { value: any }) {
     const isFirst = useFirstRender();
 
     useEffect(() => {
@@ -247,7 +247,7 @@ function IdleDetector() {
 function NameField() {
     const [name, onChange] = useInputValue('');
 
-    return <input type="text" value={name} onChange={onChange} />;
+    return <input type="text" value={name} onChange={(e) => onChange(e.target.value)} />;
 }
 
 function FadeInSection() {
@@ -375,7 +375,7 @@ function ClipboardFeature() {
     return <button>Read from Clipboard</button>;
 }
 
-function Modal({ isOpen, onClose }) {
+function Modal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
     const { setIsScrollLocked } = usePreventBodyScroll();
 
     useEffect(() => {
