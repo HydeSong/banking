@@ -88,6 +88,15 @@ const Home = async () => {
             fundingSourceUrl: 'https://api.dwolla.com/funding-sources/12345',
             userId: loggedIn?.$id || 'mock-user-id',
             sharableId: 'sharable-1',
+            id: 'acc-1',
+            availableBalance: 12545.45,
+            officialName: 'Mock Bank Account',
+            mask: '****1234',
+            institutionId: 'inst-1',
+            name: 'Primary Checking',
+            type: 'depository',
+            subtype: 'checking',
+            appwriteItemId: 'appwrite-item-1',
             currentBalance: 12545.45
           },
           {
@@ -98,6 +107,15 @@ const Home = async () => {
             fundingSourceUrl: 'https://api.dwolla.com/funding-sources/67890',
             userId: loggedIn?.$id || 'mock-user-id',
             sharableId: 'sharable-2',
+            id: 'acc-2',
+            availableBalance: 325345.45,
+            officialName: 'Mock Savings Account',
+            mask: '****5678',
+            institutionId: 'inst-2',
+            name: 'Savings Account',
+            type: 'depository',
+            subtype: 'savings',
+            appwriteItemId: 'appwrite-item-2',
             currentBalance: 325345.45
           }
         ]}
