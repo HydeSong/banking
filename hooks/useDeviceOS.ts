@@ -59,13 +59,13 @@ import { useState, useEffect } from 'react';
  * }
  *
  * @note 实现机制:
- * - 优先使用现代API: navigator.userAgentData.platform (Chrome 93+, Edge 93+, Opera 79+)
+ * - 优先使用现代API: navigator.userAgent.platform (Chrome 93+, Edge 93+, Opera 79+)
  * - 回退方案: 解析navigator.userAgent字符串 (所有浏览器)
  * - 检测逻辑: 通过特征字符串匹配识别操作系统，按特定顺序检查以确保准确性
  * - 初始检测: 组件挂载时立即执行检测，结果不会动态更新
  *
  * @note 浏览器兼容性:
- * | 浏览器 | 支持userAgentData | 最低版本 |
+ * | 浏览器 | 支持userAgent | 最低版本 |
  * |--------|-------------------|----------|
  * | Chrome | ✅ 支持           | 93       |
  * | Edge   | ✅ 支持           | 93       |
@@ -81,9 +81,9 @@ export const useDeviceOS = () => {
 
     useEffect(() => {
         const checkOS = () => {
-            // 检查浏览器是否支持 navigator.userAgentData
-            if (typeof navigator !== 'undefined' && navigator.userAgentData) {
-                const platform = navigator.userAgentData.platform;
+            // 检查浏览器是否支持 navigator.userAgent
+            if (typeof navigator !== 'undefined' && navigator.userAgent) {
+                const platform = navigator.platform;
                 switch (platform) {
                     case 'Windows':
                         return 'Windows';
