@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 /**
  * 检测用户设备操作系统的React Hook
  * 通过分析浏览器提供的用户代理信息，返回标准化的操作系统名称
@@ -71,24 +73,42 @@
  * | Firefox| ❌ 不支持         | -        |
  * | Opera  | ✅ 支持           | 79       |
  *
- * @note 局限性:
- * - 识别准确性: userAgent字符串可被修改或伪造，可能导致识别错误
- * - 浏览器扩展: 某些扩展可能修改userAgent，影响检测结果
- * - 新设备/系统: 新发布的操作系统可能暂时无法识别
- * - 模拟器环境: 在开发工具中模拟设备可能返回主机操作系统而非模拟系统
- *
  * @warning 不建议用于关键业务逻辑，如权限控制或安全相关功能
  *   操作系统检测主要用于UI适配和功能优化
  */
 export const useDeviceOS = () => {
-    // @ts-ignore
-    const { platform } = navigator?.userAgentData || {};
+    const [os, setOs] = useState('Unknown');
 
-    if (!!platform) {
-        return platform;
-    }
-    // For mobile emulators on browsers
-    return checkOSBasedOnAgentInfo(navigator.userAgent);
+    useEffect(() => {
+        const checkOS = () => {
+            // 检查浏览器是否支持 navigator.userAgentData
+            if (typeof navigator !== 'undefined' && navigator.userAgentData) {
+                const platform = navigator.userAgentData.platform;
+                switch (platform) {
+                    case 'Windows':
+                        return 'Windows';
+                    case 'macOS':
+                        return 'MacOS';
+                    case 'iOS':
+                        return 'iOS';
+                    case 'Android':
+                        return 'Android';
+                    case 'Linux':
+                        return 'Linux';
+                    default:
+                        return checkOSBasedOnAgentInfo(navigator.userAgent);
+                }
+            } else if (typeof navigator !== 'undefined') {
+                // 回退方案：使用userAgent字符串检测
+                return checkOSBasedOnAgentInfo(navigator.userAgent);
+            }
+            return 'Unknown';
+        };
+
+        setOs(checkOS());
+    }, []);
+
+    return os;
 };
 
 /**
@@ -98,31 +118,17 @@ export const useDeviceOS = () => {
  */
 const checkOSBasedOnAgentInfo = (info: string) => {
     switch (true) {
-        case info.includes('iPhone') || info.includes('iPad'):
+        case /iPhone|iPad|iPod/i.test(info):
             return 'iOS';
-        case info.includes('Linux'):
-            return 'Linux';
-        case info.includes('Windows'):
+        case /Macintosh/i.test(info) && /AppleWebKit/i.test(info) && !/Mobile/i.test(info):
+            return 'MacOS';
+        case /Windows/i.test(info):
             return 'Windows';
+        case /Android/i.test(info):
+            return 'Android';
+        case /Linux/i.test(info) && !/Android/i.test(info):
+            return 'Linux';
         default:
-            return extractUniqueOS(info);
+            return 'Unknown';
     }
-};
-
-/**
- * 从userAgent字符串中提取操作系统信息
- * @param {string} info - navigator.userAgent字符串
- * @returns {string} 提取的操作系统名称或'Unknown'
- */
-const extractUniqueOS = (info: string) => {
-    const regex = /\(([^)]+)\)/;
-    const matches = info.match(regex);
-
-    if (matches && matches.length > 1) {
-        const deviceText = matches[1];
-        const firstWord = deviceText?.trim().split(' ')[0];
-        return firstWord?.slice(0, -1);
-    }
-
-    return 'Unknown';
 };

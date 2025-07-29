@@ -84,10 +84,5 @@ export const useIntersectionObserver = ({
         };
     }, [observeRef, animateOnce, options]);
 
-    if (typeof IntersectionObserver === "undefined") {
-        console.warn("IntersectionObserver is not supported in this browser.");
-        return { observeRef, isVisible: true };
-    }
-
     return { observeRef, isVisible };
 };
