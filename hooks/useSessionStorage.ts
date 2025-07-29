@@ -54,6 +54,7 @@ export function useSessionStorage<T>(key: string, initialValue: T) {
     }
 
     try {
+      if (typeof window === 'undefined') return initialValue;
       const item = window.sessionStorage.getItem(key);
       return item ? parseJSON(item) : initialValue;
     } catch (error) {

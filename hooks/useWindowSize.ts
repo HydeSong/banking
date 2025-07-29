@@ -52,6 +52,7 @@ export const useWindowSize = (): WindowSizeProps => {
     });
 
     useEffect(() => {
+        if (typeof window === 'undefined') return;
         const handleResize = () => {
             if (typeof window !== "undefined") {
                 setWindowSize({

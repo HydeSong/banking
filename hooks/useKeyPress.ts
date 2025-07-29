@@ -57,6 +57,7 @@ export function useKeyPress(
   };
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
     window.addEventListener('blur', handleBlur);

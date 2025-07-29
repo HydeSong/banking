@@ -26,6 +26,7 @@ export function useLeaveDetection(
     }, [onLeave]);
 
     useEffect(() => {
+        if (typeof window === 'undefined') return;
         const handler = function (this: HTMLElement, ev: MouseEvent) {
             onLeaveRef.current.call(this, ev);
         };

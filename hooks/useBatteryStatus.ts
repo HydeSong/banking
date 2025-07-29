@@ -82,6 +82,7 @@ export function useBatteryStatus() {
     });
 
     useEffect(() => {
+        if (typeof window === 'undefined') return;
         const navigatorWithBattery = navigator as NavigatorWithBattery;
 
         if (!navigatorWithBattery.getBattery) {

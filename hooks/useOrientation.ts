@@ -21,7 +21,7 @@ export const useOrientation = (): Orientation => {
 
         // 设置初始方向
         setOrientation(checkOrientation());
-
+        if (typeof window === 'undefined') return;
         // 监听方向变化
         const handleOrientationChange = (e: MediaQueryListEvent) => {
             setOrientation(e.matches ? "portrait" : "landscape");

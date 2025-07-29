@@ -48,6 +48,7 @@ export function useScrollDevice(): ScrollDevice {
     let debounceTimeout: ReturnType<typeof setTimeout> | null = null;
 
     useEffect(() => {
+        if (typeof window === 'undefined') return;
         let lastEventTimestamp = 0;
         let lastDeltaY = 0;
 

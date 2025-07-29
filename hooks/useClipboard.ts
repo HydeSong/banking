@@ -111,7 +111,7 @@ export function useClipboard({ timeout = 500 } = {}) {
     };
 
     const copy = (value: string) => {
-        if ('clipboard' in navigator) {
+        if (typeof window !== 'undefined' && 'clipboard' in navigator) {
             navigator.clipboard
                 .writeText(value)
                 .then(() => handleCopyResult(true))

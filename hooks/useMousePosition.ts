@@ -46,13 +46,13 @@ export function useMousePosition() {
             const x = max(
                 0,
                 Math.round(
-                    event.pageX - r.left - (window.pageXOffset || window.scrollX),
+                    event.pageX - r.left - (typeof window !== 'undefined' ? (window.pageXOffset || window.scrollX) : 0),
                 ),
             );
             const y = max(
                 0,
                 Math.round(
-                    event.pageY - r.top - (window.pageYOffset || window.scrollY),
+                    event.pageY - r.top - (typeof window !== 'undefined' ? (window.pageYOffset || window.scrollY) : 0),
                 ),
             );
             setPosition({ x, y });
@@ -60,6 +60,7 @@ export function useMousePosition() {
     };
 
     useEffect(() => {
+        if (typeof window === 'undefined') return;
         const element = target?.current ? target.current : document;
         element.addEventListener('mousemove', setMousePosition);
 

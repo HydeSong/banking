@@ -70,7 +70,8 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
 
     const [storedValue, setStoredValue] = useState(readValue);
     const setValue = useCallback((value: T | ((val: T) => T), onError?: (error: Error) => void) => {
-    try {
+        if (typeof window === 'undefined') return;
+        try {
         const newValue = value instanceof Function ? value(storedValue) : value;
         window.localStorage.setItem(key, JSON.stringify(newValue));
         setStoredValue(newValue);

@@ -6,7 +6,7 @@ import { useEventListener } from "./useEventListener";
  * @returns {boolean} 当前网络是否在线
  */
 export function useNetwork() {
-    const [isOnline, setIsOnline] = useState<boolean>(() => typeof window !== 'undefined' ? navigator.onLine : true);
+    const [isOnline, setIsOnline] = useState<boolean>(() => typeof window !== 'undefined' ? window.navigator.onLine : true);
 
     const handleOnline = useCallback(() => {
         setIsOnline(true);

@@ -45,13 +45,10 @@ export function useIdle(timeout: number, options: Options = {}) {
     const timer = useRef<number | undefined>(undefined);
 
     useEffect(() => {
+        if (typeof window === 'undefined') return;
         const handleEvents = () => {
             setIdle(false);
-
-            if (timer.current) {
-                window.clearTimeout(timer.current);
-            }
-
+            window.clearTimeout(timer.current);
             timer.current = window.setTimeout(() => setIdle(true), timeout);
         };
 

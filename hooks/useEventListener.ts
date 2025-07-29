@@ -123,6 +123,7 @@ export function useEventListener(
     }, [handler]);
 
     useEffect(() => {
+
         const targetElement = element?.current || window;
 
         if (!(targetElement && targetElement.addEventListener)) {
