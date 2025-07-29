@@ -130,6 +130,7 @@ export function useFullscreen(
     const [isFullscreen, setFullscreen] = useState(false);
 
     const toggleFullscreen = useCallback(() => {
+        if (typeof window === 'undefined') return;
         if (isFullscreen) {
             switch (true) {
                 case 'exitFullscreen' in document:
@@ -181,8 +182,6 @@ export function useFullscreen(
                 }
             }
         }
-
-        setFullscreen((prevState) => !prevState);
     }, [isFullscreen, targetRef]);
 
     const handleFullscreenChange = useCallback(() => {
@@ -190,6 +189,7 @@ export function useFullscreen(
     }, []);
 
     useEffect(() => {
+        if (typeof window === 'undefined') return;
         document.addEventListener('fullscreenchange', handleFullscreenChange);
 
         return () => {

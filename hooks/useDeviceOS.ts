@@ -77,58 +77,42 @@ import { useState, useEffect } from 'react';
  *   操作系统检测主要用于UI适配和功能优化
  */
 export const useDeviceOS = () => {
-    const [os, setOs] = useState('Unknown');
+    const [OS, setOS] = useState<string>('unknown');
 
     useEffect(() => {
+        if (typeof window === 'undefined') return;
+        
         const checkOS = () => {
+            if (typeof navigator === 'undefined') return 'unknown';
+            const userAgent = navigator.userAgent.toLowerCase();
+            const platform = navigator.platform.toLowerCase();
+            
             // 检查浏览器是否支持 navigator.userAgent
-            if (typeof navigator !== 'undefined' && navigator.userAgent) {
-                const platform = navigator.platform;
-                switch (platform) {
-                    case 'Windows':
-                        return 'Windows';
-                    case 'macOS':
-                        return 'MacOS';
-                    case 'iOS':
-                        return 'iOS';
-                    case 'Android':
-                        return 'Android';
-                    case 'Linux':
-                        return 'Linux';
-                    default:
-                        return checkOSBasedOnAgentInfo(navigator.userAgent);
-                }
-            } else if (typeof navigator !== 'undefined') {
-                // 回退方案：使用userAgent字符串检测
-                return checkOSBasedOnAgentInfo(navigator.userAgent);
+            if (!userAgent) return 'unknown';
+            
+            // 移动设备优先检测
+            if (/iphone|ipad|ipod|ios|android|windows phone/.test(platform)) {
+                if (/iphone|ipad|ipod|ios/.test(platform)) return 'ios';
+                if (/android/.test(userAgent)) return 'android';
+                if (/windows phone/.test(userAgent)) return 'windows-phone';
             }
-            return 'Unknown';
+            
+            // 桌面设备检测
+            if (/win32|windows/.test(platform)) return 'windows';
+            if (/mac|macintel/.test(platform)) return 'macos';
+            if (/linux/.test(platform)) {
+                // 检查是否为Chrome OS
+                if (/cros/.test(userAgent)) return 'chromeos';
+                return 'linux';
+            }
+            
+            // 其他设备
+            return 'unknown';
         };
-
-        setOs(checkOS());
+        
+        const detectedOS = checkOS();
+        setOS(detectedOS);
     }, []);
 
-    return os;
-};
-
-/**
- * 根据userAgent字符串检测操作系统
- * @param {string} info - navigator.userAgent字符串
- * @returns {string} 操作系统名称
- */
-const checkOSBasedOnAgentInfo = (info: string) => {
-    switch (true) {
-        case /iPhone|iPad|iPod/i.test(info):
-            return 'iOS';
-        case /Macintosh/i.test(info) && /AppleWebKit/i.test(info) && !/Mobile/i.test(info):
-            return 'MacOS';
-        case /Windows/i.test(info):
-            return 'Windows';
-        case /Android/i.test(info):
-            return 'Android';
-        case /Linux/i.test(info) && !/Android/i.test(info):
-            return 'Linux';
-        default:
-            return 'Unknown';
-    }
+    return OS;
 };

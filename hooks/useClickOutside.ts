@@ -1,4 +1,4 @@
-import { useEventListener } from './useEventListener';
+import { useEffect } from 'react';
 
 /**
  * 检测点击元素外部区域的React Hook，适用于实现点击外部关闭模态框、下拉菜单等交互逻辑
@@ -48,13 +48,16 @@ export function useClickOutside(
     handler: (e: Event) => any,
     event = 'mousedown',
 ) {
-    useEventListener(event, (event) => {
-        const el = ref?.current;
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
 
-        if (!el || el.contains(event.target)) {
-            return;
-        }
+        const handleEvent = (event: Event) => {
+            const el = ref?.current;
+            if (!el || el.contains(event.target)) return;
+            handler(event);
+        };
 
-        handler(event);
-    });
+        document.addEventListener(event, handleEvent);
+        return () => document.removeEventListener(event, handleEvent);
+    }, [event, handler, ref]);
 }

@@ -111,12 +111,11 @@ export function useConfirmExit(
     );
 
     useEffect(() => {
-        if (!enabled) {
-            return;
-        }
-
+        if (typeof window === 'undefined') return;
         on(window, 'beforeunload', handler);
 
-        return () => off(window, 'beforeunload', handler);
-    }, [enabled, handler]);
+        return () => {
+            off(window, 'beforeunload', handler);
+        };
+    }, [handler]);
 }

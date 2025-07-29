@@ -63,13 +63,9 @@ import { useEffect, useState } from 'react';
  *   - 依赖页面中已存在的favicon元素(link[rel$=icon])
  */
 export function useTabNotification(flashDelayInSeconds = 2) {
-    const [originalTitle] = useState(document.title);
-    let defaultFavicon = document
-        .querySelector('link[rel$=icon]')
-        ?.getAttribute('href');
-    const [favicon] = useState(defaultFavicon);
-    const [notificationFavicon, setNotificationFavicon] =
-        useState(defaultFavicon);
+    const [originalTitle, setOriginalTitle] = useState('');
+    const [favicon, setFavicon] = useState<string | null>(null);
+    const [notificationFavicon, setNotificationFavicon] = useState<string | null>(null);
     const [titlePrefix, setTitlePrefix] = useState<string | null>(null);
     const [customTitle, setCustomTitle] = useState<string | null>(null);
     const [modifiedTitle, setModifiedTitle] = useState<string>('');
@@ -77,6 +73,14 @@ export function useTabNotification(flashDelayInSeconds = 2) {
     const [isShown, setIsShown] = useState(false);
     const [showFaviconDot, setShowFaviconDot] = useState(true);
     const [faviconDotColor, setFaviconDotColor] = useState('#f00000');
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        setOriginalTitle(document.title);
+        const defaultFavicon = document.querySelector('link[rel$=icon]')?.getAttribute('href');
+        setFavicon(defaultFavicon);
+        setNotificationFavicon(defaultFavicon);
+    }, []);
 
     useEffect(() => {
         if (showFaviconDot && isShown && favicon) {

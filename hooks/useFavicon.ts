@@ -104,6 +104,7 @@
  */
 export function useFavicon(defaultHref: string | null = null) {
     const set = (hrefToSet: string, type: string) => {
+        if (typeof window === 'undefined') return;
         const link: HTMLLinkElement | null =
             document.querySelector("link[rel*='icon']") ||
             document.createElement('link');
