@@ -85,8 +85,9 @@ const Home = async () => {
             accountId: 'acc-1',
             bankId: 'b1',
             accessToken: 'token-1',
-            refreshToken: 'refresh-1',
-            expiresAt: new Date().toISOString(),
+            fundingSourceUrl: 'https://api.dwolla.com/funding-sources/12345',
+            userId: loggedIn?.$id || 'mock-user-id',
+            sharableId: 'sharable-1',
             currentBalance: 12545.45
           },
           {
@@ -94,8 +95,9 @@ const Home = async () => {
             accountId: 'acc-2',
             bankId: 'b2',
             accessToken: 'token-2',
-            refreshToken: 'refresh-2',
-            expiresAt: new Date().toISOString(),
+            fundingSourceUrl: 'https://api.dwolla.com/funding-sources/67890',
+            userId: loggedIn?.$id || 'mock-user-id',
+            sharableId: 'sharable-2',
             currentBalance: 325345.45
           }
         ]}
