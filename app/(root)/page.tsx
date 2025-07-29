@@ -80,8 +80,24 @@ const Home = async () => {
         user={loggedIn}
         transactions={[]}
         banks={[
-          { currentBalance: 12545.45 },
-          { currentBalance: 325345.45 }
+          {
+            $id: 'bank-1',
+            accountId: 'acc-1',
+            bankId: 'b1',
+            accessToken: 'token-1',
+            refreshToken: 'refresh-1',
+            expiresAt: new Date().toISOString(),
+            currentBalance: 12545.45
+          },
+          {
+            $id: 'bank-2',
+            accountId: 'acc-2',
+            bankId: 'b2',
+            accessToken: 'token-2',
+            refreshToken: 'refresh-2',
+            expiresAt: new Date().toISOString(),
+            currentBalance: 325345.45
+          }
         ]}
       />
     </section>
