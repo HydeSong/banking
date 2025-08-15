@@ -33,6 +33,7 @@ import { useScrollDevice } from '@/hooks/useScrollDevice';
 import { useTitle } from '@/hooks/useTitle';
 import { useTimer } from '@/hooks/useTimer';
 import { useWindowSize } from '@/hooks/useWindowSize';
+import Chatbot from '@/components/Chatbot';
 
 function BatteryIndicator() {
     const { level, isCharging } = useBatteryStatus();
@@ -488,6 +489,7 @@ function Demo() {
             <Clock />
             <ProfilePage />
             <ResponsiveComponent />
+            <Chatbot />
         </div>
     )
 }
